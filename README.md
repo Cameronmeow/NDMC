@@ -1,3 +1,5 @@
+##NDMC
+
 ### Introduction
 
 #### Project Structure
@@ -46,4 +48,8 @@ pip install plotly.express
 pip install abc
 pip install uuid
 pip install contextlib
-# NDMC-
+
+####
+To run the file type this in the command line 
+python -m streamlit run streamlit_app.py
+
