@@ -21,7 +21,7 @@ def main():
        disease-related data across Indian states.
 
         [github_badge]: https://badgen.net/badge/icon/GitHub?icon=github&color=black&label
-        [github_link]: https://github.com/okld/streamlit-elements
+        [github_link]: https://github.com/Cameronmeow/NDMC
         """
 
     )
