@@ -3,19 +3,20 @@
 ### Introduction
 
 #### Project Structure
-/.streamlit
-    ├──config.toml #This contains some styling used as global style of the project
-/dashboard
-    ├──__init__.py #The file imports various modules from the same package (modules within the same directory) and exposes them
-    ├──card.py # Can use to provide description and photos of the disease in question 
-    ├──dashboard.py #defines the draggable class
-    ├──datagrid.py
-    ├──india_state_geo.json
-    ├──map.py
-    ├──pie.py
-    ├──player.py # I am thinking of using it to maybe have a video of instructions on how to run this 
-    ├──radar.py
-streamlit_app.py #main file
+Element   | Description
+:--------:|:-----------
+/.streamlit  | 
+/.streamlit/├──config.toml | This contains some styling used as global style of the project
+/dashboard | This folder contains the files for the project
+/dashboard/__init__.pt | The file imports various modules from the same package (modules within the same directory) and exposes them\
+/dashboard/card.py |  Can use to provide description and photos of the disease in question 
+/dashboard/datagrid.py | Will use to display the data in a tabular form 
+/dashboard/india_state_geo.json | used to generate the map
+/dashboard/map.py | map component
+/dashboard/pie.py | pie chart component
+/dashboard/player.py | Maybe will be used to have a video of instructions on how to run the file 
+/dashboard/radar.py | Radar chart component
+/streamlit_app.py | Main page file
 
 ### To run in your own repository
 
