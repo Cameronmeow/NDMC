@@ -4,7 +4,7 @@ import plotly.express as px
 import streamlit as st
 
 
-class DiseaseMap:
+class DiseasePercentMap:
     def __init__(self):
         pass
 
@@ -29,47 +29,51 @@ class DiseaseMap:
         )
         filtered_data = merged[(merged["Year"] == year) & (merged["Disease"] == disease)]
 
-        # Add text for hover information
-        filtered_data["text"] = (
-            filtered_data["Short Form"] + "<br>" + filtered_data["Cases"].astype(str)
-        )
-
-        
         # Calculate total cases
         total_cases = filtered_data["Cases"].sum()
+
+        # Calculate percentage for each state
+        filtered_data["Percent"] = round(filtered_data["Cases"] * 100 / total_cases, 2)
+        
+        # Add text for hover information
+        filtered_data["text"] = (
+            filtered_data["Short Form"] + "<br>" + filtered_data["Percent"].astype(str) + "%"
+        )
 
         # Plot the choropleth map with labels, featureidkey, and projection
         fig = px.choropleth(
             filtered_data,
-                geojson=filtered_data.geometry,
-                locations=filtered_data.index,
-                color="Cases",
-                # title=f"{disease} Cases in {year}",
-                color_continuous_scale=color_scale,
-                hover_name="NAME_1",
-                labels={"Cases": "Number of Cases"},
-                title=f"{disease} Cases in {year} - Total Cases: {total_cases:,}"
+            geojson=filtered_data.geometry,
+            locations=filtered_data.index,
+            color="Cases",
+            color_continuous_scale=color_scale,
+            hover_name="NAME_1",
+            labels={"Cases": "Number of Cases"},
+            title=f"{disease} Cases in {year} - Total Cases: {total_cases:,}"
         )
-        total_cases = 0
-            # Add text labels to each state
-        for i, row in filtered_data.iterrows():
-                total_cases += row["Cases"]
-                if pd.notna(row["Cases"]):
-                    fig.add_scattergeo(
-                        lon=[row.geometry.centroid.x],
-                        lat=[row.geometry.centroid.y],
-                        text=row["text"],
-                        mode="text",
-                        showlegend=False,
-                        textfont=dict(family="Droid Sans, sans-serif", size=12, color="black"),
-                    )
+
+        # Add text labels to each state
+        for _, row in filtered_data.iterrows():
+            if pd.notna(row["Cases"]):
+                fig.add_scattergeo(
+                    lon=[row.geometry.centroid.x],
+                    lat=[row.geometry.centroid.y],
+                    text=row["text"],
+                    mode="text",
+                    showlegend=False,
+                    textfont=dict(
+                    family="Arial Black, Arial, sans-serif",  # Bold font
+                    size=15,
+                    color="black"
+                ),
+                )
 
         # Update map properties
         fig.update_geos(
             fitbounds="locations",
             visible=False,
         )
-        # total_cases = sum()
+
         fig.update_layout(
             title={
                 "text": f"{disease} Cases in {year} - Total Cases: {total_cases:,}",
@@ -88,10 +92,11 @@ class DiseaseMap:
                 visible=False
             ),
             margin=dict(
-                l=0, r=0, t=0, b=0  # Increase top margin for the title
+                l=0, r=0, t=0, b=0  # Adjust margins for better layout
             ),
             width=1200,   # Adjust the width as needed
-            height=1200   # Adjust the height as needed
+            height=1200    # Adjust the height as needed
         )
+        
         # Render the map in Streamlit
-        st.plotly_chart(fig,use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True)
